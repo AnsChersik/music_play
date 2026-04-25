@@ -1,13 +1,29 @@
+.conteiner {
+  padding: 0px 150px;
+}
+
+body {
+  margin: 0;
+  background-color: black;
+}
+
 a,
-p {
+p,
+h1 {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 400;
   font-style: normal;
   text-decoration: none;
 }
-body {
-  margin: 0;
+
+h1 {
+  font-size: 45px;
+  color: white;
 }
+
+
+/* Шапка */
+
 header {
   height: 150px;
   background-color: black;
@@ -23,10 +39,6 @@ header {
 .ml-auto {
   display: flex;
   align-items: center;
-}
-
-.conteiner {
-  padding: 0px 150px;
 }
 
 .header_a a {
@@ -47,9 +59,33 @@ header {
   border-radius: 15px;
 }
 
-.main {
-  background-image: url("../img/Backgrpund_main.png"); /* относительный путь от CSS к img */
-  background-size: cover; /* масштабирование */
-  background-position: center; /* выравнивание по центру */
+/* Регистрация и авторизация */
+
+form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
+form p label {
+  font-size: 30px;
+  color: white;
+  background-color: #96200e;
+  padding: 17px 25px;
+  border-radius: 15px;
+}
+
+form p input {
+  height: 45px;
+  width: 350px;
+  font-size: 30px;
+  color: #96200e;
+  border-radius: 15px;
+  padding: 7px;
+  margin: 25px 0px 45px 0px;
+}
+
+.remember_me{
+  width: 50px;
+  margin: 25px 0px 45px 0px;
+}

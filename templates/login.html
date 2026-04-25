@@ -4,39 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Авторизация</title>
 </head>
 
 <body>
-    <nav>
-        {% extends "main.html" %}
+    <div class="conteiner">
 
-        {% block content %}
-        <h1>Авторизация</h1>
-        <form action="" method="post">
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.email.label }}<br>
-                {{ form.email(class="form-control", type="email") }}<br>
-                {% for error in form.email.errors %}
-            <div class="alert alert-danger" role="alert">{{ error }}</div>
-            {% endfor %}
-            </p>
-            <p>
-                {{ form.password.label }}<br>
-                {{ form.password(class="form-control", type="password") }}<br>
-                {% for error in form.password.errors %}
-            <div class="alert alert-danger" role="alert">{{ error }}</div>
-            {% endfor %}
-            </p>
-            <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-            {% if message %}
-            <div class="alert alert-danger">{{ message }}</div>
-            {% endif %}
-        </form>
-        {% endblock %}
-    </nav>
+        <nav>
+            {% extends "main.html" %}
+            {% block content %}
+            <h1>Авторизация</h1>
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.email.label }}<br>
+                    {{ form.email(class="form-control", type="email") }}<br>
+                    {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+                {% endfor %}
+                </p>
+                <p>
+                    {{ form.password.label }}<br>
+                    {{ form.password(class="form-control", type="password") }}<br>
+                    {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+                {% endfor %}
+                </p>
+                <p>{{ form.remember_me(class="remember_me") }} {{ form.remember_me.label }}</p>
+                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+                {% if message %}
+                <div class="alert alert-danger">{{ message }}</div>
+                {% endif %}
+            </form>
+            {% endblock %}
+        </nav>
+    </div>
 </body>
 
 </html>
