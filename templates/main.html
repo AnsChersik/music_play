@@ -4,28 +4,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <title>{{ title }}</title>
 </head>
 
 <body>
   <header>
-    <nav class="navbar navbar-light bg-light">
-      <h1>Музыка</h1>
+    <div class="conteiner">
+      <nav class="navbar">
+        <img src="{{ url_for('static', filename='img/Logo_background.png') }}" alt="Лого" class="img_header">
+        <div class="header_a">
+          <a href="">ГЛАВНАЯ</a>
+          <a href="">О НАС</a>
+          <a href="">КОНТАКТЫ</a>
+        </div>
+        <div class="ml-auto">
+          {% if current_user.is_authenticated %}
+          <a class="btn btn-outline-secondary" href="/logout">
+            {{ current_user.name }} {{ current_user.surname }} ВЫЙТИ
+          </a>
+          {% else %}
+          <a href="/register" class="btn btn-primary">ЗАРЕГАТЬСЯ</a>
+          <a href="/login" class="btn btn-success">ВОЙТИ</a>
+          {% endif %}
+        </div>
+      </nav>
+    </div>
 
-      <div class="ml-auto">
-        {% if current_user.is_authenticated %}
-        <a class="btn btn-outline-secondary" href="/logout">
-          {{ current_user.name }} {{ current_user.surname }} (выход)
-        </a>
-        {% else %}
-        <a href="/register" class="btn btn-primary">Создать акк</a>
-        <a href="/login" class="btn btn-success">Войти</a>
-        {% endif %}
-      </div>
-    </nav>
   </header>
 
-  <main role="main" class="container mt-4">
+  <main role="main">
+    <div class="main">
+
+      <div class="conteiner">
+
+      </div>
+    </div>
     {% block content %}{% endblock %}
   </main>
 </body>

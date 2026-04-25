@@ -1,0 +1,55 @@
+a,
+p {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+}
+body {
+  margin: 0;
+}
+header {
+  height: 150px;
+  background-color: black;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header_a,
+.img_header,
+.ml-auto {
+  display: flex;
+  align-items: center;
+}
+
+.conteiner {
+  padding: 0px 150px;
+}
+
+.header_a a {
+  font-size: 30px;
+  color: white;
+  background-color: #c44431;
+  padding: 17px 25px;
+  margin-left: 10px;
+  border-radius: 15px;
+}
+
+.ml-auto a {
+  font-size: 30px;
+  color: white;
+  background-color: #96200e;
+  padding: 17px 25px;
+  margin-left: 10px;
+  border-radius: 15px;
+}
+
+.main {
+  background-image: url("../img/Backgrpund_main.png"); /* относительный путь от CSS к img */
+  background-size: cover; /* масштабирование */
+  background-position: center; /* выравнивание по центру */
+}
+
