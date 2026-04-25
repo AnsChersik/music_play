@@ -1,3 +1,6 @@
+.conteiner-form {
+  padding: 0px 150px;
+}
 .conteiner {
   padding: 0px 150px;
 }
@@ -21,12 +24,10 @@ h1 {
   color: white;
 }
 
-
 /* Шапка */
 
 header {
   height: 150px;
-  background-color: black;
 }
 
 .navbar {
@@ -46,7 +47,7 @@ header {
   color: white;
   background-color: #c44431;
   padding: 17px 25px;
-  margin-left: 10px;
+  margin-left: 8px;
   border-radius: 15px;
 }
 
@@ -55,7 +56,7 @@ header {
   color: white;
   background-color: #96200e;
   padding: 17px 25px;
-  margin-left: 10px;
+  margin-left: 8px;
   border-radius: 15px;
 }
 
@@ -82,10 +83,10 @@ form p input {
   color: #96200e;
   border-radius: 15px;
   padding: 7px;
-  margin: 25px 0px 45px 0px;
+  margin: 25px 0px 10px 0px;
 }
 
-.remember_me{
+.remember_me {
   width: 50px;
   margin: 25px 0px 45px 0px;
 }

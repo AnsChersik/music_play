@@ -9,11 +9,10 @@
 </head>
 
 <body>
-    <div class="conteiner">
-        <nav>
-            {% extends "main.html" %}
-
-            {% block content %}
+    <nav>
+        {% extends "main.html" %}
+        {% block content %}
+        <div class="conteiner-form">
             <h1>Регистрация</h1>
 
             <form action="" method="post">
@@ -81,10 +80,9 @@
                 <div class="alert alert-danger">{{ message }}</div>
                 {% endif %}
             </form>
-            {% endblock %}
-        </nav>
-    </div>
-
+        </div>
+        {% endblock %}
+    </nav>
 </body>
 
 </html>
