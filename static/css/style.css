@@ -17,6 +17,7 @@ h1 {
   font-weight: 400;
   font-style: normal;
   text-decoration: none;
+  color: white;
 }
 
 h1 {
@@ -89,4 +90,45 @@ form p input {
 .remember_me {
   width: 50px;
   margin: 25px 0px 45px 0px;
+}
+
+/* О нас */
+
+.about_us-content {
+  display: flex;
+  height: 600px;
+  justify-content: center;
+  align-items: center;
+}
+
+.about_us-text {
+  flex-direction: column;
+  margin-left: 35px;
+}
+
+.about_us-text p {
+  font-size: 26px;  
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.about_us-text h1 {
+  font-size: 88px;  
+  margin-top: 0;
+  padding-top: 0;
+}
+
+#about_us {
+  background-color: #C44431;
+}
+
+#hr-about_us {
+  height: 45px; 
+  background-color: #700D0D; 
+  border: none; 
+}
+
+.img_about_us {
+  width: 400px;
+  height: 400px;
 }

@@ -15,8 +15,8 @@
         <img src="{{ url_for('static', filename='img/Logo_background.png') }}" alt="Лого" class="img_header">
         <div class="header_a">
           <a href="/">ГЛАВНАЯ</a>
-          <a href="">О НАС</a>
-          <a href="">КОНТАКТЫ</a>
+          <a href="#about_us">О НАС</a>
+          <a href="#contacts">КОНТАКТЫ</a>
         </div>
         <div class="ml-auto">
           {% if current_user.is_authenticated %}
@@ -36,7 +36,31 @@
   <main role="main">
     <div class="main">
     </div>
-    {% block content %}{% endblock %}
+    {% block content %}
+    <div id="about_us">
+      <div class="conteiner">
+        <div class="about_us-content">
+          <img src="{{ url_for('static', filename='img/About_us_photo.png') }}" alt="Лого" class="img_about_us">
+          <div class="about_us-text">
+            <h1>О НАС</h1>
+            <div>
+            </div class="about_ua_main_text">
+            <p>
+              Мы — команда любителей музыки, </br>
+              стремящаяся сделать её доступнее для  </br>
+              всех: поможем вам открыть новые жанры,  </br>
+              исполнителей и песни, будем делиться </br>
+              рекомендациями и обсуждать любимые </br>
+              треки — присоединяйтесь к нашему </br>
+              увлекательному путешествию, чтобы вместе </br>
+              сделать мир музыки ярче и разнообразнее!
+            </p>
+          </div>
+        </div>
+      </div>
+      <hr id="hr-about_us">
+    </div>
+    {% endblock %}
   </main>
 </body>
 
