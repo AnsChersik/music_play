@@ -12,7 +12,9 @@ body {
 
 a,
 p,
-h1 {
+h1,
+h3,
+h4 {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -107,28 +109,91 @@ form p input {
 }
 
 .about_us-text p {
-  font-size: 26px;  
+  font-size: 26px;
   margin-bottom: 0;
   padding-bottom: 0;
 }
 
 .about_us-text h1 {
-  font-size: 88px;  
+  font-size: 88px;
   margin-top: 0;
   padding-top: 0;
 }
 
 #about_us {
-  background-color: #C44431;
+  background-color: #c44431;
 }
 
 #hr-about_us {
-  height: 45px; 
-  background-color: #700D0D; 
-  border: none; 
+  height: 45px;
+  background-color: #700d0d;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 .img_about_us {
+  width: 400px;
+  height: 400px;
+}
+
+/* контакты */
+
+#contacts {
+  background-color: #200101;
+  padding-top: 15px;
+  font-weight: 250px;
+  padding-bottom: 50px;
+}
+
+#contacts h1 {
+    font-size: 88px;
+}
+
+.contacts_NS h3 {
+  font-size: 50px;
+  padding: 0;
+  margin: 0;
+}
+
+.contacts_NS {
+  text-align: left;
+  flex-direction: column;
+}
+
+.contacts_tg h4,
+.contacts_tg a {
+  font-size: 40px;
+  padding: 0;
+  margin: 0;
+}
+.contacts_tg {
+  text-align: right;
+  width: 500px;
+}
+
+.contact_people {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 35px;
+}
+
+.contacts_people {
+  display: flex;
+  flex-direction: column;
+    justify-content: space-between;
+
+    margin-bottom: 35px;
+
+}
+
+.contacts_content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.img_contacts {
   width: 400px;
   height: 400px;
 }
