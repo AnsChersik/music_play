@@ -22,6 +22,10 @@ h4 {
   color: white;
 }
 
+h1:hover, .header_a a:hover, .aout a:hover, .contacts_tg a h4:hover {
+  color: #790a0a;
+}
+
 h1 {
   font-size: 45px;
   color: white;
@@ -40,7 +44,7 @@ header {
 
 .header_a,
 .img_header,
-.ml-auto {
+.aout {
   display: flex;
   align-items: center;
 }
@@ -54,7 +58,7 @@ header {
   border-radius: 15px;
 }
 
-.ml-auto a {
+.aout a {
   font-size: 30px;
   color: white;
   background-color: #96200e;
@@ -196,4 +200,34 @@ form p input {
 .img_contacts {
   width: 400px;
   height: 400px;
+}
+
+
+/* footer */
+
+footer {
+  background-color: #1C1C1C;
+}
+
+.footer_hr {
+  height: 5px;
+  background-color: #130B0B;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer_content p {
+  font-size: 18px;
+  color: #EFEFEF;
+}
+
+.konf:hover{
+  color: #4c3e62;
+}
+
+.footer_content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

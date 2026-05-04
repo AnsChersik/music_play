@@ -18,7 +18,7 @@
           <a href="#about_us">О НАС</a>
           <a href="#contacts">КОНТАКТЫ</a>
         </div>
-        <div class="ml-auto">
+        <div class="aout">
           {% if current_user.is_authenticated %}
           <a class="btn btn-outline-secondary" href="/logout">
             {{ current_user.name }} {{ current_user.surname }} ВЫЙТИ
@@ -71,7 +71,7 @@
                 <h3>Черничкина</h3>
               </div>
               <div class="contacts_tg">
-                <a href="">
+                <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/1280px-Telegram_2019_Logo.svg.png">
                   <h4>@Chersiki</h4>
                 </a>
               </div>
@@ -82,7 +82,7 @@
                 <h3>Сильницын</h3>
               </div>
               <div class="contacts_tg">
-                <a href="">
+                <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/1280px-Telegram_2019_Logo.svg.png">
                   <h4>@strai228</h4>
                 </a>
               </div>
@@ -96,6 +96,15 @@
     </div>
     {% endblock %}
   </main>
+  <footer>
+    <div>
+      <hr class="footer_hr">
+      <div class="footer_content">
+        <p>© MUSIC_PLAY.ru - Все права защищены. 2026. </p>
+        <p class="konf"> Конфидициальность</p>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>
