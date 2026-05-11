@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, jsonify, request
+from flask import Flask, render_template, redirect, jsonify, request, flash, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from dotenv import load_dotenv
 import requests
@@ -16,6 +16,7 @@ app.config["SECRET_KEY"] = "yandexlyceum_secret_key"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "login"  
 
 API_KEY = os.getenv('KINOPOISK_API_KEY')
 if not API_KEY:
@@ -31,7 +32,9 @@ HEADERS = {
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
-    return db_sess.get(User, int(user_id))
+    user = db_sess.get(User, int(user_id))
+    db_sess.close()  # ← Обязательно закрываем сессию!
+    return user
 
 
 def fetch_films(page: int) -> tuple[list[dict], bool]:
@@ -43,10 +46,9 @@ def fetch_films(page: int) -> tuple[list[dict], bool]:
         'type': 'ALL',
         'ratingFrom': 6.0
     }
-
+    
     try:
-        response = requests.get(url, headers=HEADERS,
-                                params=params, timeout=10)
+        response = requests.get(url, headers=HEADERS, params=params, timeout=10)
         if response.status_code != 200:
             return [], False
         data = response.json()
@@ -60,8 +62,7 @@ def fetch_films(page: int) -> tuple[list[dict], bool]:
 
 def format_card(film: dict) -> dict:
     genres_list = film.get('genres', []) or []
-    genres = ', '.join([g.get('genre', '')
-                       for g in genres_list if g.get('genre')][:2])
+    genres = ', '.join([g.get('genre', '') for g in genres_list if g.get('genre')][:2])
     rating = film.get('ratingKinopoisk') or film.get('ratingImdb') or 'N/A'
     return {
         'poster': film.get('posterUrlPreview') or film.get('posterUrl'),
@@ -85,13 +86,13 @@ def register():
             )
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
+            db_sess.close()
             return render_template(
                 "register.html",
                 title="Регистрация",
                 form=form,
                 message="Такой пользователь уже есть",
             )
-
         user = User(
             surname=form.surname.data,
             name=form.name.data,
@@ -101,6 +102,7 @@ def register():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
+        db_sess.close()
         return redirect("/login")
     return render_template("register.html", title="Регистрация", form=form)
 
@@ -110,15 +112,25 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(
-            User.email == form.email.data).first()
+        user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
-            login_user(user, remember=form.remember_me.data)
-            return redirect("/")
+            login_user(user)
+            db_sess.close()
+            next_page = request.args.get('next')
+            return redirect(next_page or url_for('index'))
+        db_sess.close()
         return render_template(
             "login.html", message="Неверный логин или пароль", form=form
         )
     return render_template("login.html", title="Авторизация", form=form)
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Вы вышли из аккаунта", "info")  
+    return redirect(url_for("login"))  
 
 
 @app.route("/")
@@ -127,18 +139,11 @@ def index():
     films_raw, has_more = fetch_films(1)
     cards = [format_card(f) for f in films_raw]
     return render_template(
-        "main.html",
+        "main.html", 
         title="Главная",
-        cards=cards,
+        cards=cards, 
         has_more=has_more
     )
-
-
-@app.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    return redirect("/")
 
 
 @app.route("/api/films")
@@ -158,7 +163,7 @@ def main():
     basedir = os.path.abspath(os.path.dirname(__file__))
     db_path = os.path.join(basedir, 'db', 'users.sqlite')
     db_session.global_init(db_path)
-    app.run()
+    app.run(debug=True)
 
 
 if __name__ == "__main__":
