@@ -1,5 +1,7 @@
-from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask import Flask, render_template, redirect, jsonify, request
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from dotenv import load_dotenv
+import requests
 import os
 
 from data import db_session
@@ -7,17 +9,67 @@ from data.users import User
 from data.login_from import LoginForm
 from data.register_form import RegisterForm
 
+load_dotenv()
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "yandexlyceum_secret_key"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+API_KEY = os.getenv('KINOPOISK_API_KEY')
+if not API_KEY:
+    raise ValueError("API ключ не найден")
+
+API_BASE = 'https://kinopoiskapiunofficial.tech/api/v2.2/films'
+HEADERS = {
+    'X-API-KEY': API_KEY,
+    'Content-Type': 'application/json'
+}
+
 
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
-    return db_sess.get(User, int(user_id)) 
+    return db_sess.get(User, int(user_id))
+
+
+def fetch_films(page: int) -> tuple[list[dict], bool]:
+    url = f"{API_BASE}"
+    params = {
+        'page': page,
+        'count': 9,
+        'order': 'RATING',
+        'type': 'ALL',
+        'ratingFrom': 6.0
+    }
+
+    try:
+        response = requests.get(url, headers=HEADERS,
+                                params=params, timeout=10)
+        if response.status_code != 200:
+            return [], False
+        data = response.json()
+        items = data.get('items', [])[:9]
+        total_pages = data.get('totalPages', 10)
+        has_more = page < total_pages and len(items) == 9
+        return items, has_more
+    except Exception:
+        return [], False
+
+
+def format_card(film: dict) -> dict:
+    genres_list = film.get('genres', []) or []
+    genres = ', '.join([g.get('genre', '')
+                       for g in genres_list if g.get('genre')][:2])
+    rating = film.get('ratingKinopoisk') or film.get('ratingImdb') or 'N/A'
+    return {
+        'poster': film.get('posterUrlPreview') or film.get('posterUrl'),
+        'title': film.get('nameRu') or film.get('nameEn') or 'Без названия',
+        'genres': genres if genres else 'Жанр не указан',
+        'rating': rating,
+        'year': film.get('year', '')
+    }
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -70,8 +122,16 @@ def login():
 
 
 @app.route("/")
+@login_required
 def index():
-    return render_template("main.html", title="Главная")
+    films_raw, has_more = fetch_films(1)
+    cards = [format_card(f) for f in films_raw]
+    return render_template(
+        "main.html",
+        title="Главная",
+        cards=cards,
+        has_more=has_more
+    )
 
 
 @app.route("/logout")
@@ -81,9 +141,22 @@ def logout():
     return redirect("/")
 
 
+@app.route("/api/films")
+@login_required
+def api_films():
+    page = request.args.get('page', 2, type=int)
+    films_raw, has_more = fetch_films(page)
+    cards = [format_card(f) for f in films_raw]
+    return jsonify({
+        'cards': cards,
+        'has_more': has_more,
+        'page': page
+    })
+
+
 def main():
     basedir = os.path.abspath(os.path.dirname(__file__))
-    db_path = os.path.join(basedir, 'db', 'mars_explorer.sqlite')
+    db_path = os.path.join(basedir, 'db', 'users.sqlite')
     db_session.global_init(db_path)
     app.run()
 
