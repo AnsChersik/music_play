@@ -42,12 +42,12 @@
 
         <div class="conteiner">
           <h1>ПОДБОРКА ФИЛЬМОВ</h1>
-          
+
           <div id="cards" class="cards">
             {% for card in cards %}
-            <div class="card">
+            <div class="card" onclick="window.location.href='/film/{{ card.kinopoiskId }}'">
               <img class="card-poster" src="{{ card.poster }}" alt="{{ card.title }}"
-              onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8AARAwMjDAGAP1wAgX8+/ePAAAAAElFTkSuQmCC'">
+                onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8AARAwMjDAGAP1wAgX8+/ePAAAAAElFTkSuQmCC'">
               <div class="card-title">{{ card.title }}</div>
               <div class="card-genres">{{ card.genres }}</div>
               <div class="card-rating"> {{ card.rating }}</div>
@@ -63,7 +63,7 @@
             <span id="loading" class="loading" style="display: none;"></span>
           </div>
         </div>
-        
+
       </div>
       <div id="about_us">
         <div class="conteiner">

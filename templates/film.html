@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+    <main role="main">
+        <div class="conteiner">
+            <div class="back-link">
+                <a href="/">НАЗАД</a>
+            </div>
+            <div class="film-detail">
+                <div class="film-poster">
+                    <img src="{{ film.posterUrl }}" alt="{{ film.nameRu }}"
+                        onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8AARAwMjDAGAP1wAgX8+/ePAAAAAElFTkSuQmCC'">
+                </div>
+
+                <div class="film-info">
+                    <h1 class="film-title">{{ film.nameRu }}</h1>
+                    {% if film.nameOriginal %}
+                    <p class="film-original-title">{{ film.nameOriginal }}</p>
+                    {% endif %}
+
+                    <div class="film-meta">
+                        <span class="film-year">{{ film.year }}</span>
+                        <span class="film-country">{{ film.countries }}</span>
+                        <span class="film-genres">{{ film.genres }}</span>
+                        <span class="film-age-limit">{{ film.ageLimit }}+</span>
+                    </div>
+
+                    <div class="film-rating-block">
+                        <div class="rating-value">{{ film.rating }}</div>
+                        <div class="rating-label">рейтинг Кинопоиск</div>
+                        <div class="rating-votes">{{ film.ratingVoteCount }} оценок</div>
+                    </div>
+
+                    {% if film.filmLength %}
+                    <p class="film-duration">⏱ {{ film.filmLength }} мин.</p>
+                    {% endif %}
+
+                    {% if film.slogan %}
+                    <p class="film-slogan">"{{ film.slogan }}"</p>
+                    {% endif %}
+
+                    <div class="film-buttons">
+                        <button class="watch-btn">СМОТРЕТЬ</button>
+                        <button class="favorites-btn">ДОБАВИТЬ В ИЗБРАННОЕ</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="film-description">
+                <h2>О ФИЛЬМЕ</h2>
+                <p>{{ film.description }}</p>
+            </div>
+
+
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <hr class="footer_hr">
+            <div class="footer_content">
+                <p>© MUSIC_PLAY.ru - Все права защищены. 2026.</p>
+                <p class="konf">Конфидициальность</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

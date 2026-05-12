@@ -33,7 +33,7 @@ HEADERS = {
 def load_user(user_id):
     db_sess = db_session.create_session()
     user = db_sess.get(User, int(user_id))
-    db_sess.close()  # ← Обязательно закрываем сессию!
+    db_sess.close()  
     return user
 
 
@@ -65,6 +65,7 @@ def format_card(film: dict) -> dict:
     genres = ', '.join([g.get('genre', '') for g in genres_list if g.get('genre')][:2])
     rating = film.get('ratingKinopoisk') or film.get('ratingImdb') or 'N/A'
     return {
+        'kinopoiskId': film.get('kinopoiskId'),
         'poster': film.get('posterUrlPreview') or film.get('posterUrl'),
         'title': film.get('nameRu') or film.get('nameEn') or 'Без названия',
         'genres': genres if genres else 'Жанр не указан',
@@ -158,6 +159,46 @@ def api_films():
         'page': page
     })
 
+@app.route("/film/<int:film_id>")
+@login_required
+def film_detail(film_id):
+    url = f"{API_BASE}/{film_id}"
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=10)
+        if response.status_code != 200:
+            flash("Фильм не найден", "error")
+            return redirect(url_for('index'))
+        
+        film = response.json()
+        
+        countries = ', '.join([c.get('country', '') for c in film.get('countries', []) if c.get('country')])
+        genres = ', '.join([g.get('genre', '') for g in film.get('genres', []) if g.get('genre')])
+        rating = film.get('ratingKinopoisk') or film.get('ratingImdb') or 'N/A'
+        age_limit = film.get('ratingAgeLimits', '').replace('age', '') if film.get('ratingAgeLimits') else 'Не указано'
+        
+        film_data = {
+            'kinopoiskId': film.get('kinopoiskId'),
+            'nameRu': film.get('nameRu') or film.get('nameEn') or 'Без названия',
+            'nameOriginal': film.get('nameOriginal'),
+            'year': film.get('year', ''),
+            'posterUrl': film.get('posterUrl') or film.get('posterUrlPreview'),
+            'countries': countries if countries else 'Страна не указана',
+            'genres': genres if genres else 'Жанр не указан',
+            'rating': rating,
+            'ratingVoteCount': film.get('ratingKinopoiskVoteCount', 0),
+            'filmLength': film.get('filmLength', 0),
+            'slogan': film.get('slogan', ''),
+            'description': film.get('description', ''),
+            'shortDescription': film.get('shortDescription', ''),
+            'ageLimit': age_limit,
+            'webUrl': film.get('webUrl', '')
+        }
+        
+        return render_template("film.html", title=film_data['nameRu'], film=film_data)
+        
+    except Exception as e:
+        flash("Ошибка при загрузке информации о фильме", "error")
+        return redirect(url_for('index'))
 
 def main():
     basedir = os.path.abspath(os.path.dirname(__file__))
