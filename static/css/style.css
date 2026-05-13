@@ -13,8 +13,10 @@ body {
 a,
 p,
 h1,
+h2,
 h3,
-h4 {
+h4,
+span {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -330,4 +332,173 @@ footer {
 .load-more-wrapper {
   display: flex;
   justify-content: center;
+}
+
+.film-card {
+  background-color: #260c0c;
+  padding: 30px 0px;
+}
+
+.film-detail {
+  display: flex;
+  gap: 30px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.film-poster {
+  flex: 0 0 300px;
+}
+
+.film-poster img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.film-info {
+  flex: 1;
+  min-width: 300px;
+}
+
+.film-title {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: #fff;
+  margin-top: 0;
+}
+
+.film-original-title {
+  font-size: 30px;
+  color: #fff;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.film-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+.film-meta span {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px 12px;
+  border-radius: 5px;
+}
+
+.film-age-limit {
+  background: #ff6b6b;
+  color: white;
+  font-weight: bold;
+}
+
+.film-rating-block {
+  display: inline-block;
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px 25px;
+  background: #790a0a;
+  border-radius: 10px;
+}
+
+.rating-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.rating-label {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.rating-votes {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 5px;
+}
+
+.film-duration {
+  color: #ffffff;
+  margin: 15px 0;
+}
+
+.film-slogan {
+  color: #ffffff;
+  border-left: 3px solid #ff0000;
+  padding-left: 15px;
+  margin: 20px 0;
+}
+
+.film-buttons {
+  display: flex;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.watch-btn,
+.favorites-btn {
+  padding: 12px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.watch-btn {
+  background: #96200e;
+  color: white;
+}
+
+.watch-btn:hover {
+  background: #7e0f0f;
+}
+
+.favorites-btn {
+  background: #622017;
+  color: #fff;
+}
+
+.favorites-btn:hover {
+  background: rgb(133, 0, 0);
+}
+
+.film-description {
+  margin: 40px 0;
+  padding: 30px;
+  background: rgba(109, 58, 58, 0.372);
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.film-description h2 {
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.film-description p {
+  color: #fff;
+  font-size: 20px;
+}
+
+.back-link {
+  margin: 30px 0;
+  background-color: #c44431;
+  width: 200px;
+  height: 60px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.back-link a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 32px;
 }
