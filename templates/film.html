@@ -60,13 +60,13 @@
                         </div>
 
                         <div class="film-rating-block">
-                            <div class="rating-value"><p>{{ film.rating }}</p></div>
+                            <div class="rating-value"><p>{{ film.rating }} ⭐</p></div>
                             <div class="rating-label"><p>рейтинг Кинопоиск</p></div>
                             <div class="rating-votes"><p>{{ film.ratingVoteCount }} оценок</p></div>
                         </div>
 
                         {% if film.filmLength %}
-                        <p class="film-duration">{{ film.filmLength }} мин.</p>
+                        <p class="film-duration">Время просмотра: {{ film.filmLength }} мин.</p>
                         {% endif %}
 
                         {% if film.slogan %}

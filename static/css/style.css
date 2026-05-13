@@ -405,13 +405,14 @@ footer {
 }
 
 .rating-value {
-  font-size: 16px;
+  font-size: 28px;
   font-weight: bold;
   color: #fff;
+  margin-top: 0;
 }
 
 .rating-label {
-  font-size: 24px;
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.8);
 }
 
@@ -441,7 +442,7 @@ footer {
 
 .watch-btn,
 .favorites-btn {
-  padding: 12px 30px;
+  padding: 25px;
   font-size: 18px;
   font-weight: bold;
   border: none;

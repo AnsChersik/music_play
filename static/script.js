@@ -22,14 +22,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       data.cards.forEach((card) => {
         const cardHTML = `
-                    <div class="card">
+                    <div class="card" onclick="window.location.href='/film/${card.kinopoiskId}'">
                         <img class="card-poster" 
                              src="${card.poster}" 
                              alt="${card.title}"
                              onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8AARAwMjDAGAP1wAgX8+/ePAAAAAElFTkSuQmCC'">
                         <div class="card-title">${card.title}</div>
                         <div class="card-genres">${card.genres}</div>
-                        <div class="card-rating"> ${card.rating}</div>
+                        <div class="card-rating"> ${card.rating} ⭐</div>
                     </div>
                 `;
         cardsGrid.insertAdjacentHTML("beforeend", cardHTML);
