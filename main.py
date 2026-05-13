@@ -16,7 +16,7 @@ app.config["SECRET_KEY"] = "yandexlyceum_secret_key"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"  
+login_manager.login_view = "login"
 
 API_KEY = os.getenv('KINOPOISK_API_KEY')
 if not API_KEY:
@@ -33,7 +33,7 @@ HEADERS = {
 def load_user(user_id):
     db_sess = db_session.create_session()
     user = db_sess.get(User, int(user_id))
-    db_sess.close()  
+    db_sess.close()
     return user
 
 
@@ -46,9 +46,10 @@ def fetch_films(page: int) -> tuple[list[dict], bool]:
         'type': 'ALL',
         'ratingFrom': 6.0
     }
-    
+
     try:
-        response = requests.get(url, headers=HEADERS, params=params, timeout=10)
+        response = requests.get(url, headers=HEADERS,
+                                params=params, timeout=10)
         if response.status_code != 200:
             return [], False
         data = response.json()
@@ -62,7 +63,8 @@ def fetch_films(page: int) -> tuple[list[dict], bool]:
 
 def format_card(film: dict) -> dict:
     genres_list = film.get('genres', []) or []
-    genres = ', '.join([g.get('genre', '') for g in genres_list if g.get('genre')][:2])
+    genres = ', '.join([g.get('genre', '')
+                       for g in genres_list if g.get('genre')][:2])
     rating = film.get('ratingKinopoisk') or film.get('ratingImdb') or 'N/A'
     return {
         'kinopoiskId': film.get('kinopoiskId'),
@@ -113,7 +115,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.email == form.email.data).first()
+        user = db_sess.query(User).filter(
+            User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
             db_sess.close()
@@ -130,8 +133,8 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("Вы вышли из аккаунта", "info")  
-    return redirect(url_for("login"))  
+    flash("Вы вышли из аккаунта", "info")
+    return redirect(url_for("login"))
 
 
 @app.route("/")
@@ -140,9 +143,9 @@ def index():
     films_raw, has_more = fetch_films(1)
     cards = [format_card(f) for f in films_raw]
     return render_template(
-        "main.html", 
+        "main.html",
         title="Главная",
-        cards=cards, 
+        cards=cards,
         has_more=has_more
     )
 
@@ -159,6 +162,7 @@ def api_films():
         'page': page
     })
 
+
 @app.route("/film/<int:film_id>")
 @login_required
 def film_detail(film_id):
@@ -168,14 +172,17 @@ def film_detail(film_id):
         if response.status_code != 200:
             flash("Фильм не найден", "error")
             return redirect(url_for('index'))
-        
+
         film = response.json()
-        
-        countries = ', '.join([c.get('country', '') for c in film.get('countries', []) if c.get('country')])
-        genres = ', '.join([g.get('genre', '') for g in film.get('genres', []) if g.get('genre')])
+
+        countries = ', '.join([c.get('country', '')
+                              for c in film.get('countries', []) if c.get('country')])
+        genres = ', '.join([g.get('genre', '')
+                           for g in film.get('genres', []) if g.get('genre')])
         rating = film.get('ratingKinopoisk') or film.get('ratingImdb') or 'N/A'
-        age_limit = film.get('ratingAgeLimits', '').replace('age', '') if film.get('ratingAgeLimits') else 'Не указано'
-        
+        age_limit = film.get('ratingAgeLimits', '').replace(
+            'age', '') if film.get('ratingAgeLimits') else 'Не указано'
+
         film_data = {
             'kinopoiskId': film.get('kinopoiskId'),
             'nameRu': film.get('nameRu') or film.get('nameEn') or 'Без названия',
@@ -193,12 +200,20 @@ def film_detail(film_id):
             'ageLimit': age_limit,
             'webUrl': film.get('webUrl', '')
         }
-        
+
+        web_url = film.get('webUrl', '')
+        if web_url:
+            film_data['watchUrl'] = web_url.replace(
+                'kinopoisk.ru', 'sspoisk.ru')
+        else:
+            film_data['watchUrl'] = '#'
+
         return render_template("film.html", title=film_data['nameRu'], film=film_data)
-        
+
     except Exception as e:
         flash("Ошибка при загрузке информации о фильме", "error")
         return redirect(url_for('index'))
+
 
 def main():
     basedir = os.path.abspath(os.path.dirname(__file__))

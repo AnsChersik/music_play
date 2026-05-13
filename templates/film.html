@@ -74,7 +74,7 @@
                         {% endif %}
 
                         <div class="film-buttons">
-                            <button class="watch-btn">СМОТРЕТЬ</button>
+                                <a href="{{ film.watchUrl if film.watchUrl != '#' else '#' }}" class="watch-btn" target="_blank">СМОТРЕТЬ</a>
                             <button class="favorites-btn">ДОБАВИТЬ В ИЗБРАННОЕ</button>
                         </div>
                     </div>
