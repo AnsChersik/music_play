@@ -70,18 +70,12 @@
             <img src="{{ url_for('static', filename='img/About_us_photo.png') }}" alt="Лого" class="img_about_us">
             <div class="about_us-text">
               <h1>О НАС</h1>
-              <div>
-              </div class="about_ua_main_text">
-              <p>
-                Мы — команда любителей музыки, </br>
-                стремящаяся сделать её доступнее для  </br>
-                всех: поможем вам открыть новые жанры,  </br>
-                исполнителей и песни, будем делиться </br>
-                рекомендациями и обсуждать любимые </br>
-                треки — присоединяйтесь к нашему </br>
-                увлекательному путешествию, чтобы вместе </br>
-                сделать мир музыки ярче и разнообразнее!
-              </p>
+              <div class="about_ua_main_text">
+                <p>
+                  {{ about_us_text|safe }}
+
+                </p>
+              </div>
             </div>
           </div>
         </div>

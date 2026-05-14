@@ -78,6 +78,18 @@ def format_card(film: dict) -> dict:
     }
 
 
+def read_text_file(filename: str, default: str = "") -> str:
+    try:
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        file_path = os.path.join(basedir, 'static', 'text', filename)
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return default
+    except Exception as e:
+        return default
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
@@ -144,12 +156,19 @@ def logout():
 def index():
     films_raw, has_more = fetch_films(1)
     cards = [format_card(f) for f in films_raw]
+
+    about_us_text = read_text_file(
+        'about_us.txt',
+        default='Мы — команда любителей музыки, стремящаяся сделать её доступнее для всех.'
+    )
+    
     return render_template(
         "main.html",
         title="Главная",
         cards=cards,
-        has_more=has_more
-    )
+        has_more=has_more,
+        about_us_text=about_us_text
+)
 
 
 @app.route("/api/films")
