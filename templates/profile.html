@@ -32,6 +32,36 @@
     <main role="main">
         <div class=" main-block-profile">
             <div class="conteiner">
+                <div class="profile-card">
+                    <div class="profile-info">
+                        <h1 class="profile-name">
+                            {{ user.name if user.name else 'Пользователь' }}
+                            {{ user.surname if user.surname else '' }}
+                        </h1>
+
+                        <div class="profile-details">
+                            {% if user.age %}
+                            <div class="profile-detail">
+                                <span class="profile-detail-label">ВОЗРАСТ:</span>
+                                <span class="profile-detail-value">{{ user.age }} ЛЕТ</span>
+                            </div>
+                            {% endif %}
+
+                            {% if user.email %}
+                            <div class="profile-detail">
+                                <span class="profile-detail-label">EMAIL:</span>
+                                <span class="profile-detail-value profile-email">{{ user.email }}</span>
+                            </div>
+                            {% endif %}
+
+                            <div class="profile-detail">
+                                <span class="profile-detail-label">ФИЛЬМОВ В ИЗБАННОМ:</span>
+                                <span class="profile-detail-value">{{ cards|length }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <h1>ИЗБРАННОЕ</h1>
 
                 {% if cards %}
@@ -59,7 +89,7 @@
                     {% endfor %}
                 </div>
                 {% else %}
-                <div>
+                <div class="no-films">
                     <p>У вас пока нет избранных фильмов</p>
                     <a href="/">
                         СМОТРЕТЬ КАТАЛОГ

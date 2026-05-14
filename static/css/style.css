@@ -447,7 +447,7 @@ footer {
   font-size: 18px;
   font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
 }
 
@@ -505,15 +505,14 @@ footer {
   font-size: 32px;
 }
 
-
 .main-block-profile {
   background-color: #260c0c;
-
+  padding: 25px 0px;
 }
 
 .favorites-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
+  grid-template-columns: repeat(3, 1fr);
   gap: 25px;
   justify-content: center;
   margin-bottom: 30px;
@@ -522,18 +521,17 @@ footer {
 }
 
 .favorite-card {
-  border-radius: 50px; 
+  border-radius: 50px;
   padding: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  margin-bottom: 15px;
 }
 
 .favorite-card:hover {
   transform: translateY(-5px);
-  background-color: #311212; 
+  background-color: #311212;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
@@ -578,7 +576,7 @@ footer {
 .favorite-card-actions {
   display: flex;
   gap: 10px;
-  margin-top: auto; 
+  margin-top: auto;
   width: 100%;
   justify-content: center;
 }
@@ -616,3 +614,62 @@ footer {
   background: #e15c5c;
   color: white;
 }
+.profile-card {
+  background: #2b0101;
+  border-radius: 30px;
+  padding: 25px 30px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.profile-info {
+  flex: 1;
+  color: white;
+}
+
+.profile-name {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  color: #fff;
+}
+
+.profile-surname {
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 12px 0;
+}
+
+.profile-details {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;  gap: 15px 30px;
+  font-size: 22px;
+}
+
+.profile-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-detail-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.profile-detail-value {
+  color: #fff;
+  font-weight: 500;
+}
+
+.no-films a:hover {
+  color: #950c0c;
+}
+
+
+
+

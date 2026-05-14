@@ -316,7 +316,7 @@ def show_favorites():
         except Exception:
             continue
 
-    return render_template("profile.html", title="Моё избранное", cards=favorite_films_data)
+    return render_template("profile.html", title="Моё избранное", cards=favorite_films_data, user=current_user)
 
 
 def main():
