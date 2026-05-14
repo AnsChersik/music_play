@@ -8,8 +8,6 @@ from data import db_session
 from data.users import User
 from data.login_from import LoginForm
 from data.register_form import RegisterForm
-from data.favorites import Favorite
-from datetime import datetime
 
 load_dotenv()
 
@@ -78,18 +76,6 @@ def format_card(film: dict) -> dict:
     }
 
 
-def read_text_file(filename: str, default: str = "") -> str:
-    try:
-        basedir = os.path.abspath(os.path.dirname(__file__))
-        file_path = os.path.join(basedir, 'static', 'text', filename)
-        with open(file_path, 'r', encoding='utf-8') as f:
-            return f.read().strip()
-    except FileNotFoundError:
-        return default
-    except Exception as e:
-        return default
-
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
@@ -156,19 +142,12 @@ def logout():
 def index():
     films_raw, has_more = fetch_films(1)
     cards = [format_card(f) for f in films_raw]
-
-    about_us_text = read_text_file(
-        'about_us.txt',
-        default='Мы — команда любителей музыки, стремящаяся сделать её доступнее для всех.'
-    )
-    
     return render_template(
         "main.html",
         title="Главная",
         cards=cards,
-        has_more=has_more,
-        about_us_text=about_us_text
-)
+        has_more=has_more
+    )
 
 
 @app.route("/api/films")
@@ -236,106 +215,46 @@ def film_detail(film_id):
         return redirect(url_for('index'))
 
 
-@app.route("/api/profile/check/<int:film_id>")
-@login_required
-def check_favorite(film_id):
-    try:
-        db_sess = db_session.create_session()
-        exists = db_sess.query(Favorite).filter(
-            Favorite.user_id == current_user.id,
-            Favorite.kinopoisk_id == film_id
-        ).first() is not None
-        db_sess.close()
-        return jsonify({'in_favorites': exists})
-    except Exception as e:
-        print(f"Error in check_favorite: {e}")
-        return jsonify({'in_favorites': False}), 500
-
-
-@app.route("/api/profile/toggle/<int:film_id>", methods=["POST"])
-@login_required
-def toggle_favorite(film_id):
-    try:
-        print(
-            f"Toggle called for film_id={film_id}, user_id={current_user.id}")
-        db_sess = db_session.create_session()
-        favorite = db_sess.query(Favorite).filter(
-            Favorite.user_id == current_user.id,
-            Favorite.kinopoisk_id == film_id
-        ).first()
-
-        if favorite:
-            db_sess.delete(favorite)
-            db_sess.commit()
-            message = "Фильм удалён из избранного"
-            in_favorites = False
-        else:
-            new_fav = Favorite(user_id=current_user.id, kinopoisk_id=film_id)
-            db_sess.add(new_fav)
-            db_sess.commit()
-            message = "Фильм добавлен в избранное"
-            in_favorites = True
-
-        db_sess.close()
-        return jsonify({'success': True, 'message': message, 'in_favorites': in_favorites})
-    except Exception as e:
-        print(f"Error in toggle_favorite: {e}")
-        return jsonify({'success': False, 'message': str(e)}), 500
-
-
-@app.route("/api/profile/remove/<int:film_id>", methods=["POST"])
-@login_required
-def remove_favorite(film_id):
-    try:
-        print(
-            f"Remove called for film_id={film_id}, user_id={current_user.id}")
-        db_sess = db_session.create_session()
-        favorite = db_sess.query(Favorite).filter(
-            Favorite.user_id == current_user.id,
-            Favorite.kinopoisk_id == film_id
-        ).first()
-
-        if favorite:
-            db_sess.delete(favorite)
-            db_sess.commit()
-            db_sess.close()
-            return jsonify({'success': True, 'message': 'Фильм удалён из избранного'})
-
-        db_sess.close()
-        return jsonify({'success': False, 'message': 'Фильм не найден в избранном'}), 404
-    except Exception as e:
-        print(f"Error in remove_favorite: {e}")
-        return jsonify({'success': False, 'message': str(e)}), 500
-
-
 @app.route("/profile")
 @login_required
-def show_favorites():
-    db_sess = db_session.create_session()
-    favorite_ids = [item[0] for item in db_sess.query(Favorite.kinopoisk_id)
-                    .filter(Favorite.user_id == current_user.id).all()]
-    db_sess.close()
+def profile():
+    return render_template("profile.html", title="Личный кабинет")
 
-    favorite_films_data = []
-    for kp_id in favorite_ids:
-        url = f"{API_BASE}/{kp_id}"
-        try:
-            response = requests.get(url, headers=HEADERS, timeout=5)
-            if response.status_code == 200:
-                film = response.json()
-                formatted = format_card(film)
-                formatted['kinopoiskId'] = kp_id
-                web_url = film.get('webUrl', '')
-                if web_url:
-                    formatted['watchUrl'] = web_url.replace(
-                        'kinopoisk.ru', 'sspoisk.ru')
-                else:
-                    formatted['watchUrl'] = '#'
-                favorite_films_data.append(formatted)
-        except Exception:
-            continue
 
-    return render_template("profile.html", title="Моё избранное", cards=favorite_films_data, user=current_user)
+@app.route("/search")
+@login_required
+def search():
+    query = request.args.get('q', '').strip()
+    if not query:
+        return render_template("search.html", title="Поиск", cards=[], query='')
+
+    url = "https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword"
+    params = {'keyword': query, 'page': 1}
+    try:
+        response = requests.get(url, headers=HEADERS, params=params, timeout=10)
+        if response.status_code != 200:
+            flash("Ошибка при поиске", "error")
+            return render_template("search.html", title="Поиск", cards=[], query=query)
+        data = response.json()
+        films_raw = data.get('films', [])
+        cards = []
+        for film in films_raw[:18]:
+            genres_list = film.get('genres', []) or []
+            genres = ', '.join([g.get('genre', '') for g in genres_list if g.get('genre')][:2])
+            rating = film.get('rating') or 'N/A'
+            cards.append({
+                'kinopoiskId': film.get('filmId'),
+                'poster': film.get('posterUrlPreview') or film.get('posterUrl'),
+                'title': film.get('nameRu') or film.get('nameEn') or 'Без названия',
+                'genres': genres if genres else 'Жанр не указан',
+                'rating': rating,
+                'year': film.get('year', '')
+            })
+    except Exception:
+        flash("Ошибка при поиске", "error")
+        cards = []
+
+    return render_template("search.html", title="Поиск", cards=cards, query=query)
 
 
 def main():
