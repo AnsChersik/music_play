@@ -20,7 +20,7 @@
           <a href="#contacts">КОНТАКТЫ</a>
         </div>
         <div class="aout">
-          <a href="">ПРОФИЛЬ</a>
+          <a href="/profile">ПРОФИЛЬ</a>
           <a class="btn btn-outline-secondary" href="/logout">
             ВЫЙТИ
           </a>
@@ -48,9 +48,9 @@
             <div class="card" onclick="window.location.href='/film/{{ card.kinopoiskId }}'">
               <img class="card-poster" src="{{ card.poster }}" alt="{{ card.title }}"
                 onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8AARAwMjDAGAP1wAgX8+/ePAAAAAElFTkSuQmCC'">
-              <div class="card-title">{{ card.title }}</div>
-              <div class="card-genres">{{ card.genres }}</div>
-              <div class="card-rating"> {{ card.rating }} ⭐</div>
+              <h3 class="card-title">{{ card.title }}</h3>
+              <p class="card-genres">{{ card.genres }}</p>
+              <p class="card-rating"> {{ card.rating }} ⭐</p>
             </div>
             {% endfor %}
           </div>
